@@ -11,7 +11,8 @@ def index(request):
 
 def load(request):
 
-   return JsonResponse({
-            "hello":[
-            {"error": "At least one recipient required.",},{
-            "tyson": {"points": 23, "rebounds": 12}}]}, status=401)
+   objects = players.objects.all()
+
+   return JsonResponse({'results': 
+            [obj.serialize() for obj in objects]
+   })

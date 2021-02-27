@@ -7,6 +7,18 @@ class players(models.Model):
     height = models.CharField(max_length=10)
     weight = models.CharField(max_length=10)
     position = models.CharField(max_length=10)
+
+    def serialize(self):
+        return {
+            self.name: {
+                'team': self.team,
+                'height': self.height,
+                'weight': self.weight,
+                'position': self.position,
+                'stats': statistics.serialize_stats(None, self)
+            }
+
+        }
     
 
 class statistics(models.Model):
@@ -21,3 +33,26 @@ class statistics(models.Model):
     FG_percentage = models.CharField(max_length=10)
     TP_percantage = models.CharField(max_length=10)
     player = models.ForeignKey('players', on_delete=models.CASCADE)
+
+
+    def serialize_stats(self, player):
+        objects = statistics.objects.filter(player=player)
+        stats = {}
+        for obj in objects:
+            Year = {
+                obj.year:{
+                    'team': obj.team,
+                    'pts_per_g': obj.avg_points,
+                    'ast_per_g': obj.avg_assist,
+                    'reb_per_g': obj.avg_rebounds,
+                    'stl_per_g': obj.avg_steals,
+                    'blk_per_g': obj.avg_blocks,
+                    'tov_per_g': obj.avg_turnovers,
+                    'fg_pct': obj.FG_percentage,
+                    'fg3_pct': obj.TP_percantage
+                    }
+                }
+            stats.update(Year)
+
+        return stats
+
