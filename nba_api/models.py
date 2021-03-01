@@ -7,6 +7,7 @@ class players(models.Model):
     height = models.CharField(max_length=10)
     weight = models.CharField(max_length=10)
     position = models.CharField(max_length=10)
+    stats = models.ManyToManyField("statistics", blank=True, related_name="stats")
 
     def serialize(self):
         return {
@@ -32,7 +33,6 @@ class statistics(models.Model):
     avg_turnovers = models.CharField(max_length=10)
     FG_percentage = models.CharField(max_length=10)
     TP_percantage = models.CharField(max_length=10)
-    player = models.ForeignKey('players', on_delete=models.CASCADE)
 
 
     def serialize_stats(self, player):

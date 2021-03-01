@@ -11,8 +11,9 @@ def index(request):
 
 def load(request):
 
-   objects = players.objects.all()
+   print(list(statistics.objects.all().values()))
 
-   return JsonResponse({'results': 
-            [obj.serialize() for obj in objects]
+   return JsonResponse({'results':
+            'h'
+            #[obj.serialize() for obj in objects]
    })
