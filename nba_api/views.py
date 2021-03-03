@@ -12,11 +12,22 @@ def index(request):
             {"error": "At least one recipient required.",},{
             "tyson": {"points": 23, "rebounds": 12}}]}, status=401)
 
-def load(request):
+def teamSearch(request,team,showStats):
 
-   objects = players.objects.all()
+   objects = players.objects.filter(team=team)
 
-   
-   return JsonResponse({'results':
-            [obj.serialize() for obj in objects]
+   if showStats == 'true':
+      return JsonResponse({'results':
+            [obj.serialize_all() for obj in objects]
    })
+
+   else:  
+      return JsonResponse({'results':
+            [obj.serialize_players() for obj in objects]
+   })
+
+def playerSearch(request):
+   pass
+
+def statsSearch(request):
+   pass

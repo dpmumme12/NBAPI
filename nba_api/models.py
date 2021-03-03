@@ -9,7 +9,7 @@ class players(models.Model):
     position = models.CharField(max_length=10)
     stats = models.ManyToManyField("statistics", blank=True, related_name="stats")
 
-    def serialize(self):
+    def serialize_all(self):
 
         objects = self.stats.all()
         stats = {}
@@ -37,8 +37,40 @@ class players(models.Model):
                 'position': self.position,
                 'stats': stats
             }
-
         }
+
+    def serialize_players(self):
+        return {
+            self.name: {
+                'id': self.id,
+                'team': self.team,
+                'height': self.height,
+                'weight': self.weight,
+                'position': self.position,
+            }
+        }
+
+    def serialize_stats(self):
+        objects = self.stats.all()
+        stats = {}
+        for obj in objects:
+            Year = {
+                obj.year:{
+                    'team': obj.team,
+                    'pts_per_g': obj.avg_points,
+                    'ast_per_g': obj.avg_assist,
+                    'reb_per_g': obj.avg_rebounds,
+                    'stl_per_g': obj.avg_steals,
+                    'blk_per_g': obj.avg_blocks,
+                    'tov_per_g': obj.avg_turnovers,
+                    'fg_pct': obj.FG_percentage,
+                    'fg3_pct': obj.TP_percantage
+                    }
+                }
+            stats.update(Year)
+
+        return stats
+
     
 
 class statistics(models.Model):
