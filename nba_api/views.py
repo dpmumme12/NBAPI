@@ -26,8 +26,20 @@ def teamSearch(request,team,showStats):
             [obj.serialize_players() for obj in objects]
    })
 
-def playerSearch(request):
-   pass
 
-def statsSearch(request):
-   pass
+def playerSearch(request,player):
+
+   objects = players.objects.filter(name__istartswith=player)
+
+   return JsonResponse({'results':
+            [obj.serialize_players() for obj in objects]
+   })
+
+
+def statsSearch(request,id):
+   
+   objects = players.objects.filter(id=id)
+
+   return JsonResponse({'results':
+            [obj.serialize_stats() for obj in objects]
+   })
