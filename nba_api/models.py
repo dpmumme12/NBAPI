@@ -1,4 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+
+class user(AbstractUser):
+    apiKey = models.CharField(max_length=16)
 
 # Create your models here.
 class players(models.Model):

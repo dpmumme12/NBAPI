@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-from .models import players, statistics
-from bs4 import BeautifulSoup as soup
-from urllib.request import urlopen
-from urllib import parse
+from django.http import JsonResponse,HttpResponseRedirect
+from .models import players, statistics, user
+from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
+from django.urls import reverse
+from .functions import r
 
 # Create your views here.
 def index(request):
@@ -11,6 +12,33 @@ def index(request):
             "results":[
             {"error": "At least one recipient required.",},{
             "tyson": {"points": 23, "rebounds": 12}}]}, status=401)
+
+def register(request):
+   if request.method == "POST":
+      username = request.POST["username"]
+      email = request.POST["email"]
+
+      # Ensure password matches confirmation
+      password = request.POST["password"]
+      confirmation = request.POST["confirmation"]
+      if password != confirmation:
+         return render(request, "auctions/register.html", {
+               "message": "Passwords must match."
+         })
+
+      # Attempt to create new user
+      try:
+         user = user.objects.create_user(username, email, password)
+         user.save()
+      except IntegrityError:
+         return render(request, "auctions/register.html", {
+               "message": "Username already taken."
+         })
+      login(request, user)
+      return HttpResponseRedirect(reverse("index"))
+   else:
+      return render(request, "nba_api/register.html")
+
 
 def teamSearch(request,team,showStats):
 
