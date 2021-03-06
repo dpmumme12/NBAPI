@@ -4,7 +4,7 @@ from .models import players, statistics, user
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.urls import reverse
-from .functions import r
+from .functions import randompassword
 
 # Create your views here.
 def index(request):
@@ -16,28 +16,48 @@ def index(request):
 def register(request):
    if request.method == "POST":
       username = request.POST["username"]
-      email = request.POST["email"]
 
       # Ensure password matches confirmation
       password = request.POST["password"]
       confirmation = request.POST["confirmation"]
       if password != confirmation:
-         return render(request, "auctions/register.html", {
+         return render(request, "nba_api/register.html", {
                "message": "Passwords must match."
          })
 
       # Attempt to create new user
       try:
-         user = user.objects.create_user(username, email, password)
-         user.save()
+         apiKey = randompassword()
+         new_user = user.objects.create_user(username, password, apiKey)
+         new_user.save()
       except IntegrityError:
-         return render(request, "auctions/register.html", {
+         return render(request, "nba_api/register.html", {
                "message": "Username already taken."
          })
       login(request, user)
       return HttpResponseRedirect(reverse("index"))
    else:
+      
       return render(request, "nba_api/register.html")
+
+def login_view(request):
+    if request.method == "POST":
+
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+        # Check if authentication successful
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "nba_api/login.html", {
+                "message": "Invalid username and/or password."
+            })
+    else:
+        return render(request, "nba_api/login.html")
 
 
 def teamSearch(request,team,showStats):

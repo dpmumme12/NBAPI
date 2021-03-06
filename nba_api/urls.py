@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from . import views
 
 urlpatterns = [
@@ -7,5 +8,6 @@ urlpatterns = [
     path('TeamSearch/<str:team>/showStats=<str:showStats>',views.teamSearch, name ='teamSearch'),
     path('PlayerSearch/<str:player>',views.playerSearch, name ='playerSearch'),
     path('statsSearch/<str:id>',views.statsSearch, name ='statsSearch'),
-    path('Register',views.register, name ='resgister')
+    path('Register',views.register, name ='register'),
+    path('Login',views.login_view, name ='login')
 ]
