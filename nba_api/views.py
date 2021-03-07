@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse,HttpResponseRedirect
-from .models import players, statistics, user
+from .models import players, statistics, User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.urls import reverse
@@ -8,6 +8,7 @@ from .functions import randompassword
 
 # Create your views here.
 def index(request):
+  
    return JsonResponse({
             "results":[
             {"error": "At least one recipient required.",},{
@@ -28,13 +29,13 @@ def register(request):
       # Attempt to create new user
       try:
          apiKey = randompassword()
-         new_user = user.objects.create_user(username, password, apiKey)
+         new_user = User.objects.create_user(username, password, apiKey=apiKey)
          new_user.save()
       except IntegrityError:
          return render(request, "nba_api/register.html", {
                "message": "Username already taken."
          })
-      login(request, user)
+      login(request, new_user)
       return HttpResponseRedirect(reverse("index"))
    else:
       
