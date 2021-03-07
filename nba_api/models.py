@@ -6,6 +6,7 @@ from django.db import models
 
 class User(AbstractUser):
     apiKey = models.CharField(max_length=26)
+    num_of_request = models.IntegerField(default=0)
     
 class players(models.Model):
     name = models.CharField(max_length=255)

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse,HttpResponseRedirect
+from django.http import JsonResponse,HttpResponseRedirect, HttpResponse
 from .models import players, statistics, User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -61,34 +61,67 @@ def login_view(request):
         return render(request, "nba_api/login.html")
 
 
-def teamSearch(request,team,showStats):
+def teamSearch(request,team,showStats,apiKey):
 
-   objects = players.objects.filter(team=team)
+   num_results = User.objects.filter(apiKey = apiKey).count()
 
-   if showStats == 'true':
+   if num_results == 1:
+
+      objects = players.objects.filter(team=team)
+
+      user = User.objects.get(apiKey = apiKey)
+      user.num_of_request += 1
+      user.save()
+
+      if showStats == 'true':
+         return JsonResponse({'results':
+               [obj.serialize_all() for obj in objects]
+      })
+
+      else:  
+         return JsonResponse({'results':
+               [obj.serialize_players() for obj in objects]
+      })
+
+   else:
+      return HttpResponse("Error: Invalid key given.")
+
+
+def playerSearch(request,player,apiKey):
+
+   num_results = User.objects.filter(apiKey = apiKey).count()
+
+   if num_results == 1:
+
+      objects = players.objects.filter(name__istartswith=player)
+
+      user = User.objects.get(apiKey = apiKey)
+      user.num_of_request += 1
+      user.save()
+
       return JsonResponse({'results':
-            [obj.serialize_all() for obj in objects]
-   })
-
-   else:  
-      return JsonResponse({'results':
-            [obj.serialize_players() for obj in objects]
-   })
-
-
-def playerSearch(request,player):
-
-   objects = players.objects.filter(name__istartswith=player)
-
-   return JsonResponse({'results':
-            [obj.serialize_players() for obj in objects]
-   })
-
-
-def statsSearch(request,id):
+               [obj.serialize_players() for obj in objects]
+      })
    
-   objects = players.objects.filter(id=id)
+   else:
+      return HttpResponse("Error: Invalid key given.")
 
-   return JsonResponse({'results':
-            [obj.serialize_stats() for obj in objects]
-   })
+
+def statsSearch(request,id,apiKey):
+
+   num_results = User.objects.filter(apiKey = apiKey).count()
+
+   if num_results == 1:
+   
+      objects = players.objects.filter(id=id)
+
+      user = User.objects.get(apiKey = apiKey)
+      user.num_of_request += 1
+      user.save()
+
+      return JsonResponse({'results':
+               [obj.serialize_stats() for obj in objects]
+      })
+
+   else:
+      return HttpResponse("Error: Invalid key given.")
