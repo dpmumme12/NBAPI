@@ -9,10 +9,19 @@ from .functions import randompassword
 # Create your views here.
 def index(request):
   
-   return JsonResponse({
-            "results":[
-            {"error": "At least one recipient required.",},{
-            "tyson": {"points": 23, "rebounds": 12}}]}, status=401)
+   return render(request, "nba_api/index.html")
+
+def docs(request):
+  
+   return render(request, "nba_api/docs.html")
+
+def account(request):
+  
+   return render(request, "nba_api/account.html")
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
 
 def register(request):
    if request.method == "POST":
@@ -29,7 +38,7 @@ def register(request):
       # Attempt to create new user
       try:
          apiKey = randompassword()
-         new_user = User.objects.create_user(username, password, apiKey=apiKey)
+         new_user = User.objects.create_user(username=username, password=password, apiKey=apiKey)
          new_user.save()
       except IntegrityError:
          return render(request, "nba_api/register.html", {
