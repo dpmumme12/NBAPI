@@ -16,6 +16,8 @@ def docs(request):
    return render(request, "nba_api/docs.html")
 
 def account(request):
+
+   
   
    return render(request, "nba_api/account.html")
 

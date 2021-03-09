@@ -5,3 +5,35 @@
 .login-form{
     width: 35%;
 }
+
+.index-header{
+    text-align: center;
+    padding: 10px;
+}
+
+.header-pic{
+    width: 85%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding-top: 20px;
+}
+
+.block1{
+    padding: 15px;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.block2{
+    margin-top: 30px;
+    width: 100%;
+    background-color: rgb(255, 254, 254);
+}
+
+.bullet-point{
+   
+    padding: 5px;
+}

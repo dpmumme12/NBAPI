@@ -1,5 +1,29 @@
 {% extends "nba_api/layout.html" %}
 
 {% block main %}
-docs
+{% load static %}
+<div class="container">
+    <h2 class="index-header">Docs</h2>
+    <h5 class="index-header">Results will be returned in JSON format as follows</h5>
+    <img src="{% static 'nba_api\img\Screenshot.png' %}" class="header-pic" style="padding-bottom: 15px;">
+
+    <div class="block2">
+        <h3 class="index-header">Search By Team</h3>
+        <h6 class="bullet-point">- Search for teams to get their current roster with this url "http://127.0.0.1:8000/TeamSearch/{team}/showStats=false/apiKey=*****".</h6>
+        <h6 class="bullet-point">- Just put in your custom apiKey and your are good to go.</h6>
+        <h6 class="bullet-point">- Set showStats=true to return each players career stats as well.</h6>
+    </div>
+
+    <div class="block2">
+        <h3 class="index-header">Search By Player</h3>
+        <h6 class="bullet-point">- Search for players with this url "127.0.0.1:8000/PlayerSearch/{String}/apiKey=*****".</h6>
+        <h6 class="bullet-point">- Searches by string input and returns all players who's name starts with the string.</h6>
+    </div>
+
+    <div class="block2">
+        <h3 class="index-header">Get Players Stats</h3>
+        <h6 class="bullet-point">- Get a players career stats with this url "http://127.0.0.1:8000/statsSearch/{id}/apiKey=*****".</h6>
+        <h6 class="bullet-point">- Put in a players id number to return all of their stats.</h6>
+    </div>
+</div>
 {% endblock %}

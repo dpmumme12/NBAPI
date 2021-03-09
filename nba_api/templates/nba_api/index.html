@@ -1,5 +1,19 @@
 {% extends "nba_api/layout.html" %}
 
 {% block main %}
-index
+{% load static %}
+<div class="container">
+    <h2 class="index-header">Welcome to NBAPI!</h2>
+    <h2 class="index-header" >Get info on your favorite player or team any time for your website or app.</h2>
+
+    <img src="{% static 'nba_api\img\26-261722_sport-basketball-game-photo-nba-wallpaper-4k-pc.jpg' %}" class="header-pic">
+
+    
+    <h4 class="index-header" style="padding-top: 20px;">View our docs or register to get your apiKey today!</h4>
+    <div class="block1">
+        <button type="button" class="btn btn-secondary btn-lg" style="margin-right: 10px; width: 10%;" onclick="location.href='{% url 'docs' %}'">Docs</button>
+        <button type="button" class="btn btn-secondary btn-lg" style="margin-left: 10px; width: 10%;" onclick="location.href='{% url 'register' %}'">Register</button>
+    </div>
+
+</div>
 {% endblock %}
