@@ -8,7 +8,7 @@ from .functions import randompassword
 
 # Create your views here.
 def index(request):
-  
+   
    return render(request, "nba_api/index.html")
 
 def docs(request):

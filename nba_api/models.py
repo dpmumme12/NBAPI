@@ -77,7 +77,7 @@ class players(models.Model):
             stats.update(Year)
 
         return stats
-
+        
     
 
 class statistics(models.Model):
